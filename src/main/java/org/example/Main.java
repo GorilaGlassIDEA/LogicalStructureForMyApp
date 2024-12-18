@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println(HttpService.makeGet());
+        System.out.println(HttpService.makeGet().getContent().get(0).getId());
 
     }
 }

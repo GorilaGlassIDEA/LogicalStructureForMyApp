@@ -25,5 +25,6 @@ public class EventsDTO {
     private String name;
     private String description;
     private String type;
-    private Date date;
+    // TODO: невозможно кастовать Date из json => пока String
+    private String date;
 }

@@ -1,7 +1,6 @@
 package org.example.service;
 
-import org.example.adapter.CustomDateAdapter;
-import org.example.models.EventsDTO;
+import org.example.adapter.CastJsonFile;
 import org.example.models.EventsResponseDTO;
 
 public class HttpService {
@@ -52,7 +51,7 @@ public class HttpService {
                 "    \"totalPages\": 1248\n" +
                 "  }\n" +
                 "}";
-        return CustomDateAdapter.readJson(jsonAnswer);
+        return CastJsonFile.readJson(jsonAnswer);
 
     }
 
