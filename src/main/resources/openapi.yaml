@@ -1,0 +1,88 @@
+openapi: "3.0.3"
+info:
+  title: "OpenAPI definition"
+  description: "cloud API"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:8081"
+    description: "Generated server url"
+paths:
+  /feedback:
+    post:
+      tags:
+        - "feedback-controller"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FeedbackDto"
+  /feedback/{userId}/{eventId}:
+    get:
+      tags:
+        - "feedback-controller"
+      operationId: "getById"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FeedbackDto"
+  /feedback/{userId}:
+    get:
+      tags:
+        - "feedback-controller"
+      operationId: "getByUserId"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/FeedbackDto"
+components:
+  schemas:
+    FeedbackDto:
+      type: "object"
+      properties:
+        eventId:
+          type: "string"
+        like:
+          type: "boolean"
+        viewedSeconds:
+          type: "integer"
+          format: "int32"
+        moreOpened:
+          type: "boolean"
+        reported:
+          type: "boolean"
+        userId:
+          type: "string"

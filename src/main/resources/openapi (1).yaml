@@ -1,0 +1,145 @@
+openapi: "3.0.3"
+info:
+  title: "OpenAPI definition"
+  description: "cloud API"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:${SERVER_PORT:8083}"
+    description: "Generated server url"
+paths:
+  /api/v1/events:
+    get:
+      tags:
+        - "afisha-controller"
+      operationId: "getAll1"
+      parameters:
+        - name: "page_number"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "page_size"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModelEventDto"
+  /api/v1/shortlist:
+    get:
+      tags:
+        - "afisha-controller"
+      operationId: "getShortList"
+      parameters:
+        - name: "page_number"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "page_size"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModelEventDto"
+components:
+  schemas:
+    PageMetadata:
+      type: "object"
+      properties:
+        size:
+          type: "integer"
+          format: "int64"
+        number:
+          type: "integer"
+          format: "int64"
+        totalElements:
+          type: "integer"
+          format: "int64"
+        totalPages:
+          type: "integer"
+          format: "int64"
+    EventDto:
+      type: "object"
+      properties:
+        city:
+          type: "string"
+          enum:
+            - "MOSCOW"
+            - "SPB"
+            - "NULL"
+        address:
+          type: "string"
+        locationName:
+          type: "string"
+        id:
+          type: "string"
+        allImages:
+          type: "array"
+          items:
+            type: "array"
+        mainImage:
+          type: "array"
+          items:
+            type: "string"
+            format: "byte"
+        tags:
+          type: "array"
+          items:
+            type: "string"
+        categories:
+          type: "array"
+          items:
+            type: "string"
+        shortDescription:
+          type: "string"
+        imageURL:
+          type: "array"
+          items:
+            type: "string"
+        price:
+          type: "string"
+        priceType:
+          type: "string"
+          enum:
+            - "PRICELESS"
+            - "TICKET"
+            - "HOUR"
+            - "AVERAGE_BILL"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        type:
+          type: "string"
+          enum:
+            - "EVENT"
+            - "REPEAT"
+            - "PLACE"
+        date:
+          type: "string"
+          format: "date-time"
+    PagedModelEventDto:
+      type: "object"
+      properties:
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+        content:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/EventDto"
