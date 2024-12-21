@@ -1,58 +1,36 @@
 package org.example.service;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import org.example.adapter.CastJsonFile;
 import org.example.models.EventsResponseDTO;
+
+import javax.security.auth.callback.Callback;
+import java.io.IOException;
 
 public class HttpService {
 
 
-    public static EventsResponseDTO makeGet() {
-        String jsonAnswer = "{\n" +
-                "  \"content\": [\n" +
-                "    {\n" +
-                "      \"city\": \"SPB\",\n" +
-                "      \"address\": \"Невский просп., д. 60\",\n" +
-                "      \"locationName\": \"кинотеатр «Аврора»\",\n" +
-                "      \"id\": \"KG213778\",\n" +
-                "      \"allImages\": [\n" +
-                "        \"AQ==\"\n" +
-                "      ],\n" +
-                "      \"mainImage\": \"AQ==\",\n" +
-                "      \"tags\": [\n" +
-                "        \"6+\",\n" +
-                "        \"мультфильмы\",\n" +
-                "        \"новый год с детьми\",\n" +
-                "        \"детские кинопоказы\",\n" +
-                "        \"кинопоказы\",\n" +
-                "        \"кино\",\n" +
-                "        \"новогодние развлечения\",\n" +
-                "        \"интересное\",\n" +
-                "        \"зимние развлечения\"\n" +
-                "      ],\n" +
-                "      \"categories\": [\n" +
-                "        \"cinema\"\n" +
-                "      ],\n" +
-                "      \"shortDescription\": \"В кинотеатре «Аврора» пройдёт долгожданная детская новогодняя ёлка с показами мультфильмов.\",\n" +
-                "      \"imageURL\": [\n" +
-                "        \"https://media.kudago.com/images/event/fd/3f/fd3fd86b59334389e8c3750f5c2c6445.jpg\"\n" +
-                "      ],\n" +
-                "      \"price\": \"1400 рублей\",\n" +
-                "      \"priceType\": \"TICKET\",\n" +
-                "      \"name\": \"новогодний праздник\",\n" +
-                "      \"description\": \"«Аврора» вместе с анимационной студией «Мельница» проведёт сказочную новогоднюю ёлку для детей. \\nГостей ждут весёлые конкурсы и мастер-классы, танцы и хороводы, встреча с Дедом Морозом и Снегурочкой и, конечно, кинопоказы. На большом экране пройдёт предпремьерный показ мультфильма «Иван Царевич и Серый волк 6», который выйдет в широкий прокат только в конце декабря. После сеанса детей ждут подарки и сладкие призы.\\nПодробнее о программе праздника можно узнать на сайте кинотеатра «Аврора».\",\n" +
-                "      \"type\": \"EVENT\",\n" +
-                "      \"date\": \"2024-12-22T13:00:00\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"page\": {\n" +
-                "    \"size\": 1,\n" +
-                "    \"number\": 3,\n" +
-                "    \"totalElements\": 1248,\n" +
-                "    \"totalPages\": 1248\n" +
-                "  }\n" +
-                "}";
-        return CastJsonFile.readJson(jsonAnswer);
-
+    public static EventsResponseDTO makeGet(String url) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println(response.code());
+            if (response.isSuccessful()) {
+                String jsonAnswer = response.body().string();
+                return CastJsonFile.readJson(jsonAnswer);
+            } else {
+                System.err.println("Не удалось получить ответ по запросу GET " + response.code());
+                return null;
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+        return null;
     }
 
 }
