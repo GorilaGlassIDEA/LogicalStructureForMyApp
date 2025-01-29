@@ -14,8 +14,6 @@ public class EventsDTO {
     private String address;
     private String locationName;
     private String id;
-    private String mainImage;
-    private List<String> allImages;
     private List<String> tags;
     private List<String> categories;
     private String shortDescription;
@@ -24,7 +22,9 @@ public class EventsDTO {
     private String priceType;
     private String name;
     private String description;
-    private String type;
     // TODO: невозможно кастовать Date из json => пока String
     private String date;
+    private String referralLink;
+    private String source;
+    private String creatorId;
 }

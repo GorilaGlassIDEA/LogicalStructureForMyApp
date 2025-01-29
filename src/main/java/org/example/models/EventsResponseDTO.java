@@ -6,5 +6,4 @@ import java.util.List;
 @Data
 public class EventsResponseDTO {
     List<EventsDTO> content;
-    Page page;
 }

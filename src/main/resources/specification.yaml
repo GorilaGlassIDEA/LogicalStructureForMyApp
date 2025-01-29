@@ -1,0 +1,387 @@
+openapi: "3.0.3"
+info:
+  title: "DadaTuda API"
+  version: "1.0.0"
+servers:
+  - url: "http://90.156.170.125:8080"
+    description: "Stand URL`"
+paths:
+  /feedback-service/feedback:
+    post:
+      tags:
+        - "feedback"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /feedback-service/feedback/{userId}/{eventId}:
+    get:
+      tags:
+        - "feedback"
+      operationId: "getByEventIdAndUserId"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FeedbackDto"
+  /feedback-service/feedback/{userId}:
+    get:
+      tags:
+        - "feedback"
+      operationId: "getByUserId"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/FeedbackDto"
+  /feedback-service/shortlist/{userId}/{eventId}:
+    delete:
+      tags:
+        - "shortlist"
+      operationId: "removeFromShortList"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+    get:
+      tags:
+        - "shortlist"
+      operationId: "markStarred"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /feedback-service/shortlist/{userId}:
+    get:
+      tags:
+        - "shortlist"
+      operationId: "getShortlistByUserId"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "page_size"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "page_number"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ShortListActivityDto"
+
+  /event-service/api/v1/events:
+    post:
+      tags:
+        - "activity"
+      operationId: "createEvent"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActivityDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+  /event-service/api/v1/events/{id}:
+    delete:
+      tags:
+        - "activity"
+      operationId: "deleteEvent"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+  /event-service/api/v1/events/for/{userId}:
+    get:
+      tags:
+        - "activity"
+      operationId: "getForUser"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ActivityDto"
+  /event-service/api/v1/events/{eventId}:
+    get:
+      tags:
+        - "activity"
+      operationId: "getEventById"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ActivityDto"
+  /event-service/api/v1/events/list:
+    post:
+      tags:
+        - "activity"
+      operationId: "getEventsByIds"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "array"
+              items:
+                type: "string"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ActivityDto"
+  /event-service/api/v2/events/for/{id}:
+    get:
+      tags:
+        - "activity"
+      operationId: "getAll"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "page_size"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ActivityDto"
+components:
+  schemas:
+    ActivityDto:
+      type: "object"
+      properties:
+        city:
+          type: "string"
+          enum:
+            - "MOSCOW"
+            - "SPB"
+            - "NULL"
+        address:
+          type: "string"
+        locationName:
+          type: "string"
+        id:
+          type: "string"
+        tags:
+          type: "array"
+          items:
+            type: "string"
+        categories:
+          type: "array"
+          items:
+            type: "string"
+        shortDescription:
+          type: "string"
+        imageURL:
+          type: "array"
+          items:
+            type: "string"
+        price:
+          type: "string"
+        priceType:
+          type: "string"
+          enum:
+            - "PRICELESS"
+            - "TICKET"
+            - "HOUR"
+            - "AVERAGE_BILL"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        date:
+          type: "string"
+          format: "date-time"
+        referralLink:
+          type: "string"
+        source:
+          type: "string"
+          enum:
+            - "KUDAGO"
+            - "BUSINES"
+            - "TIMEPAD"
+            - "GOOGLE_FORM"
+        creatorId:
+          type: "string"
+    FeedbackDto:
+      type: "object"
+      properties:
+        eventId:
+          type: "string"
+        like:
+          type: "boolean"
+        viewedSeconds:
+          type: "integer"
+          format: "int32"
+        moreOpened:
+          type: "boolean"
+        reported:
+          type: "boolean"
+        userId:
+          type: "string"
+    ShortListActivityDto:
+      type: "object"
+      properties:
+        starred:
+          type: "boolean"
+        city:
+          type: "string"
+          enum:
+            - "MOSCOW"
+            - "SPB"
+            - "NULL"
+        address:
+          type: "string"
+        locationName:
+          type: "string"
+        id:
+          type: "string"
+        tags:
+          type: "array"
+          items:
+            type: "string"
+        categories:
+          type: "array"
+          items:
+            type: "string"
+        shortDescription:
+          type: "string"
+        imageURL:
+          type: "array"
+          items:
+            type: "string"
+        price:
+          type: "string"
+        priceType:
+          type: "string"
+          enum:
+            - "PRICELESS"
+            - "TICKET"
+            - "HOUR"
+            - "AVERAGE_BILL"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        date:
+          type: "string"
+          format: "date-time"
+        referralLink:
+          type: "string"
+        source:
+          type: "string"
+          enum:
+            - "KUDAGO"
+            - "BUSINES"
+            - "TIMEPAD"
+            - "GOOGLE_FORM"
+        creatorId:
+          type: "string"
