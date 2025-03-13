@@ -1,19 +1,17 @@
 package org.example.service;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.squareup.okhttp.*;
+import okio.BufferedSink;
 import org.example.adapter.CastJsonFile;
 import org.example.models.EventsResponseDTO;
 
-import javax.security.auth.callback.Callback;
 import java.io.IOException;
 
-public class HttpService {
+public class HttpService implements HttpRequest {
 
+    private OkHttpClient client = new OkHttpClient();
 
-    public static EventsResponseDTO makeGet(String url) {
-        OkHttpClient client = new OkHttpClient();
+    public EventsResponseDTO makeGet(String url) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -32,5 +30,20 @@ public class HttpService {
         }
         return null;
     }
+
+    @Override
+    public void makePost(String url,  String jsonString, Callback callback) {
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8"); // Тип контента
+        RequestBody body = RequestBody.create(JSON, jsonString);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body) //  Указываем метод POST и тело запроса
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(callback);
+    }
+
 
 }
