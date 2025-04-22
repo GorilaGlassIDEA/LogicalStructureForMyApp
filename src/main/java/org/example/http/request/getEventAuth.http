@@ -1,0 +1,1 @@
+GET https://api.dada-tuda.ru/api/v3/events/for?page_size=1&categories=

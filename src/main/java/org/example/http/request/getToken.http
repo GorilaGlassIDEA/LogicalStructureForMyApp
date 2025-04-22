@@ -1,0 +1,8 @@
+POST https://auth.dada-tuda.ru/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+    client_id=service-client
+    &client_secret=qYz5m2pnIQAW1dWjqzPsRirfD3rdYGh3
+    &grant_type=password
+    &username=defUser
+    &password=defPswd

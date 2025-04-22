@@ -1,15 +1,14 @@
-package org.example.models;
+package org.example.models.shortlist;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-public class EventsDTO {
-
+@AllArgsConstructor
+public class EventShortlistDTO {
+    private boolean starred;
     private String city;
     private String address;
     private String locationName;
@@ -22,8 +21,8 @@ public class EventsDTO {
     private String priceType;
     private String name;
     private String description;
-    // TODO: невозможно кастовать Date из json => пока String
     private String date;
+    //Заменить на Date класс
     private String referralLink;
     private String source;
     private String creatorId;

@@ -1,9 +1,9 @@
-POST http://90.156.170.125:8080/feedback-service/feedback
+POST https://api.dada-tuda.ru/api/v1/feedback
 Content-Type: application/json
 
 {
-  "eventId": "TP3226873",
-  "like": "false",
+  "eventId": "KG216643",
+  "like": "true",
   "viewedSeconds": "1",
   "moreOpened": "true",
   "reported": "false",
